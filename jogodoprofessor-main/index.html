@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PC Party - Manutenção Maluca</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Nosso CSS -->
+    <link rel="stylesheet" href="assets/css/css.css">
+</head>
+
+<body>
+
+    <main class="container py-4">
+
+        <!-- =========================
+             MENU PRINCIPAL
+        ========================== -->
+
+        <section id="menu" class="screen active">
+
+            <div class="text-center">
+
+                <div class="logo">
+                    🔧 PC PARTY
+                </div>
+
+                <h1>Manutenção Maluca</h1>
+
+                <p class="subtitle">
+                    O Mario Party dos técnicos de informática.
+                </p>
+
+                <div class="menu-box">
+
+                    <h2>👨‍🔧 Escolha a quantidade de jogadores</h2>
+
+                    <div class="row g-3 mt-3">
+
+                        <div class="col-6 col-md-3">
+                            <button
+                                class="btn game-button w-100"
+                                onclick="startGame(1)"
+                            >
+                                👨‍🔧 1 Jogador
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <button
+                                class="btn game-button w-100"
+                                onclick="startGame(2)"
+                            >
+                                👨‍🔧 2 Jogadores
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <button
+                                class="btn game-button w-100"
+                                onclick="startGame(3)"
+                            >
+                                👨‍🔧 3 Jogadores
+                            </button>
+                        </div>
+
+                        <div class="col-6 col-md-3">
+                            <button
+                                class="btn game-button w-100"
+                                onclick="startGame(4)"
+                            >
+                                👨‍🔧 4 Jogadores
+                            </button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             JOGO
+        ========================== -->
+
+        <section id="game" class="screen">
+
+            <!-- CABEÇALHO -->
+
+            <div class="game-header">
+
+                <div>
+                    🏁 Rodada:
+                    <strong id="round">
+                        1 / 8
+                    </strong>
+                </div>
+
+                <div>
+                    🔧 Vez de:
+                    <strong id="currentPlayer">
+                        Player 1
+                    </strong>
+                </div>
+
+                <button
+                    class="btn btn-warning"
+                    onclick="openShop()"
+                >
+                    🛒 Loja
+                </button>
+
+                <button
+                    class="btn btn-success"
+                    onclick="openInventory()"
+                >
+                    🎒 Inventário
+                </button>
+
+                <button
+                    class="btn btn-info"
+                    onclick="openDevTools()"
+                >
+                    🛠️ Dev Tools
+                </button>
+
+                <button
+                    class="btn btn-outline-light"
+                    onclick="returnToMenu()"
+                >
+                    🏠 Tela inicial
+                </button>
+
+            </div>
+
+
+            <!-- PLACAR -->
+
+            <div
+                id="scoreboard"
+                class="row g-3 my-3"
+            ></div>
+
+
+            <!-- CLIENTE -->
+
+            <div class="customer">
+
+                <div class="customer-avatar">
+                    👨‍💼
+                </div>
+
+                <div>
+
+                    <small>
+                        NOVO CHAMADO
+                    </small>
+
+                    <h2 id="problemTitle">
+                        Meu computador está lento!
+                    </h2>
+
+                    <p id="problemDescription">
+                        Tudo demora para abrir.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- DIAGNÓSTICO -->
+
+            <div
+                id="diagnostic"
+                class="game-box mt-3"
+            >
+
+                <h3>
+                    🔎 Qual é o problema?
+                </h3>
+
+                <p>
+                    Analise o chamado e escolha o diagnóstico correto.
+                </p>
+
+                <div class="question-speed" aria-live="polite">
+                    <div>
+                        ⏱️ Tempo para bônus:
+                        <strong id="answerTime">25</strong>s
+                        <span>· Bônus disponível: +<strong id="speedBonus">100</strong> pts · Erro: −50 pts</span>
+                    </div>
+                    <div class="answer-timer-track">
+                        <div id="answerTimerFill" class="answer-timer-fill"></div>
+                    </div>
+                </div>
+
+                <div
+                    id="options"
+                    class="row g-3"
+                ></div>
+
+            </div>
+
+
+            <!-- MINIGAME -->
+
+            <div
+                id="minigame"
+                class="game-box mt-3 hidden"
+            ></div>
+
+
+            <!-- MENSAGEM -->
+
+            <div
+                id="message"
+                class="mt-3"
+            ></div>
+
+
+            <!-- PRÓXIMA RODADA -->
+
+            <div class="text-center mt-3">
+
+                <button
+                    id="nextButton"
+                    class="btn btn-success btn-lg hidden"
+                    onclick="nextRound()"
+                >
+                    ➡️ Próxima rodada
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             INVENTÁRIO DO JOGADOR
+        ========================== -->
+
+        <section id="inventory" class="screen">
+
+            <div class="game-box">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h2>🎒 Inventário</h2>
+                        <p id="inventoryPlayer"></p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="closeInventory()">Voltar ao jogo</button>
+                </div>
+                <p class="inventory-help">🛡️ Ative antivírus/limpeza para o próximo minigame; nobreak/backup ficam armados até proteger contra um evento ou penalidade. Sabotagens ficam guardadas até escolher o adversário e o momento de uso.</p>
+                <div id="inventoryItems" class="row g-3"></div>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             LOJA
+        ========================== -->
+
+        <section id="shop" class="screen">
+
+            <div class="game-box">
+
+                <div class="d-flex justify-content-between">
+
+                    <div>
+
+                        <h2>
+                            🛒 Loja do Técnico
+                        </h2>
+
+                        <p>
+                            Use créditos para atrapalhar seus rivais.
+                        </p>
+
+                    </div>
+
+                    <button
+                        class="btn btn-secondary"
+                        onclick="closeShop()"
+                    >
+                        Voltar
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="shopItems"
+                    class="row g-3 mt-2"
+                ></div>
+
+            </div>
+
+        </section>
+
+        <!-- =========================
+             FERRAMENTAS DE DESENVOLVIMENTO
+        ========================== -->
+
+        <section id="devtools" class="screen">
+
+            <div class="game-box">
+
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div>
+                        <h2>🛠️ Dev Tools</h2>
+                        <p>Ferramentas de teste da partida atual.</p>
+                    </div>
+                    <button class="btn btn-secondary" onclick="closeDevTools()">Voltar ao jogo</button>
+                </div>
+
+                <form id="devLogin" class="dev-login mt-3">
+                    <label for="devPassword" class="form-label">🔒 Senha de acesso</label>
+                    <div class="input-group">
+                        <input id="devPassword" class="form-control" type="password" autocomplete="off" required>
+                        <button class="btn btn-info" type="submit">Entrar</button>
+                    </div>
+                    <div id="devLoginMessage" class="mt-2" role="status"></div>
+                </form>
+
+                <div id="devPanel" class="hidden">
+                    <div id="devRoundInfo" class="dev-round-info my-3"></div>
+
+                    <div class="row g-3">
+                        <div class="col-12 col-lg-6">
+                            <div class="dev-card">
+                                <h3>💰 Créditos</h3>
+                                <label for="devPlayer" class="form-label">Jogador</label>
+                                <select id="devPlayer" class="form-select mb-2"></select>
+                                <label for="devCredits" class="form-label">Quantidade</label>
+                                <input id="devCredits" class="form-control mb-2" type="number" value="100" step="1">
+                                <div class="d-flex flex-wrap gap-2">
+                                    <button class="btn btn-success" type="button" onclick="changeDevCredits('add')">Adicionar</button>
+                                    <button class="btn btn-danger" type="button" onclick="changeDevCredits('subtract')">Remover</button>
+                                    <button class="btn btn-warning" type="button" onclick="changeDevCredits('set')">Definir total</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="dev-card">
+                                <h3>🏁 Rodada</h3>
+                                <p>Partida atual: <strong id="devCurrentRound">—</strong></p>
+                                <label for="devRound" class="form-label">Ir para rodada</label>
+                                <div class="input-group">
+                                    <input id="devRound" class="form-control" type="number" min="1" max="8" value="1">
+                                    <button class="btn btn-warning" type="button" onclick="setDevRound()">Alterar rodada</button>
+                                </div>
+                                <div id="devPlayersView" class="dev-players-view mt-3"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="dev-card">
+                                <h3>✨ Efeitos positivos</h3>
+                                <label for="devPositiveEffect" class="form-label">Jogador selecionado</label>
+                                <select id="devPositiveEffect" class="form-select mb-2">
+                                    <option value="ups">🔋 Nobreak</option>
+                                    <option value="antivirus">🛡️ Antivírus</option>
+                                    <option value="backup">💾 Backup</option>
+                                    <option value="clean">🧹 Limpeza Profunda</option>
+                                </select>
+                                <button class="btn btn-success" type="button" onclick="applyDevEffect('positive')">Adicionar proteção</button>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="dev-card">
+                                <h3>💥 Efeitos negativos</h3>
+                                <label for="devNegativeEffect" class="form-label">Adversário selecionado</label>
+                                <select id="devNegativeEffect" class="form-select mb-2">
+                                    <option value="dirty">🖌️ Tela Suja</option>
+                                    <option value="freeze">🧊 Congelamento</option>
+                                    <option value="slow">🐌 PC de 2008</option>
+                                    <option value="virus">🦠 Vírus</option>
+                                </select>
+                                <button class="btn btn-danger" type="button" onclick="applyDevEffect('negative')">Aplicar efeito</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dev-card mt-3">
+                        <div class="d-flex align-items-center flex-wrap gap-2">
+                            <button class="btn btn-info" type="button" onclick="runDevTests()">🧪 Executar testes</button>
+                            <button class="btn btn-outline-warning" type="button" onclick="clearDevEffects()">🧽 Limpar efeitos pendentes</button>
+                        </div>
+                        <div id="devTestResults" class="mt-3" aria-live="polite"></div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             FINAL
+        ========================== -->
+
+        <section id="end" class="screen">
+
+            <div class="game-box text-center">
+
+                <div class="trophy">
+                    🏆
+                </div>
+
+                <h1 id="winner">
+                    Técnico do Ano!
+                </h1>
+
+                <p id="winnerDescription"></p>
+
+                <div
+                    id="finalScore"
+                    class="mt-4"
+                ></div>
+
+                <button
+                    class="btn game-button btn-lg mt-4"
+                    onclick="location.reload()"
+                >
+                    🔄 Jogar novamente
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- JavaScript -->
+
+    <script src="assets/java/java.js"></script>
+
+</body>
+
+</html>
